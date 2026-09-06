@@ -29,6 +29,7 @@ import time
 from abc import ABC
 from dataclasses import dataclass
 from functools import reduce, lru_cache, partial
+from importlib import metadata as importlib_metadata
 from typing import (
     Dict,
     List,
@@ -42,7 +43,6 @@ from typing import (
     Sequence,
 )
 
-import pkg_resources
 import z3
 from grammar_graph import gg
 from grammar_graph.gg import GrammarGraph
@@ -458,7 +458,7 @@ class ISLaSolver:
         # currently since the fuzzingbook library inflexibly binds z3 to 4.8.8.0. Thus,
         # one has to manually install a newer version and ignore the warning.
 
-        z3_version = pkg_resources.get_distribution("z3-solver").version
+        z3_version = importlib_metadata.version("z3-solver")
         assert version.parse(z3_version) >= version.parse("4.8.13.0"), (
             f"ISLa requires at least z3 4.8.13.0, present: {z3_version}. "
             "Please install a newer z3 version, e.g., using 'pip install z3-solver==4.8.14.0'."
